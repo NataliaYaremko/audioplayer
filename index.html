@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Audio Player</title>
+	<style>
+		#playlist{
+			list-style-type: none;
+		}
+		#playlist li a{
+			color: black;
+			text-decoration: none;
+		}
+		#playlist .current-song a{
+			color: gray;
+		}
+	</style>
+</head>
+<body>
+	<audio src="" controls="" id="audioPlayer">
+		Sorry, your browser doesn't support HTML5!
+	</audio>
+	<ul id="playlist">
+		<li class="current-song"><a href="audio/Maps.mp3">Maps</a></li>
+		<li><a href="audio/Animals.mp3">Animals</a></li>
+		<li><a href="audio/Sugar.mp3">Sugar</a></li>
+	</ul>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+		audioPlayer();
+		function audioPlayer(){
+			var currentSong = 0;
+			$("#audioPlayer")[0].src = $("#playlist li a")[0];
+			$("#audioPlayer")[0].play();
+			$("#playlist li a").click(function(e){
+				e.preventDefault();
+				$("#audioPlayer")[0].src = this;
+				$("#audioPlayer")[0].play();
+				$("#playlist li").removeClass("current-song");
+				  currentSong = $(this).parent().index();
+				  $(this).parent().addClass("current-song");
+			});
+
+			$("#audioPlayer")[0].addEventListener("ended", function(){
+				currentSong++;
+				if (currentSong == $("playlist li a").length) {
+					currentSong = 0;
+				}
+				$("#playlist li").removeClass("current-song");
+				$("#playlist li:eq("+currentSong+")").addClass("current-song");
+				$("#audioPlayer")[0].src = $("#playlist li a")[currentSong].href;
+				$("#audioPlayer")[0].play();
+			});
+		}
+	</script>
+</body>
+</html> 
